@@ -3,6 +3,7 @@ from DB_handler import DBModule
 
 DB = DBModule()
 app = Flask(__name__)
+app.secret_key = 'WAP_003'
 
 @app.route('/',methods=["GET", "POST"])
 def main():
@@ -13,8 +14,14 @@ def register():
     if request.method == 'POST':
         id = request.form['regi_id']
         pw = request.form['regi_pw']
-        DB.register(id,pw)
-        return render_template('main.html')
+        if not id or not pw:
+            return redirect(url_for('register'))
+        else:
+            if DB.register(id,pw):
+                return redirect(url_for('register'))
+            else:
+                return redirect(url_for('main'))
+
     return render_template('register.html')
 
 if __name__ =='__main__':

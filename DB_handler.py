@@ -1,5 +1,4 @@
 import pyrebase
-import json
 
 class DBModule:
     def __init__(self):
@@ -16,6 +15,5 @@ class DBModule:
             firebase = pyrebase.initialize_app(config)
             self.db = firebase.database()
 
-
-    def register(self,id,pw):
-        self.db.child('users').child(id).set(pw)
+    def register(self,_id_,pw):
+        self.db.child('user_info').child(_id_).set(pw)
