@@ -24,5 +24,19 @@ def register():
 
     return render_template('register.html')
 
+@app.route('/login', methods = ['GET', 'POST'])
+def login():
+    if request.method == 'POST':
+        id = request.args.get('username')
+        pw = request.args.get('password')
+        if DB.login(id, pw):
+            session['login_S'] = id
+            return redirect(url_for('main'))
+        else:
+            flash("아이디가 없거나 비밀번호가 틀립니다.")
+            return redirect(url_for('main'))
+
+    return render_template('login.html')
+
 if __name__ =='__main__':
     app.run(debug=True)

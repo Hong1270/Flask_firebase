@@ -17,3 +17,13 @@ class DBModule:
 
     def register(self,_id_,pw):
         self.db.child('user_info').child(_id_).set(pw)
+
+    def login(self,id,pw):
+        user = self.db.child('user_info').get().val()
+        try:
+            if user == pw:
+                return False
+            else:
+                return True
+        except:
+            return True
