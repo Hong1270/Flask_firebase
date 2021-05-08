@@ -9,6 +9,11 @@ app.secret_key = 'WAP_003'
 def main():
     return render_template('main.html')
 
+@app.route('/home')
+def home():
+    id =session['login_S']
+    return render_template('home.html', name = id)
+
 @app.route('/register', methods=['GET', 'POSt'])
 def register():
     if request.method == 'POST':
@@ -29,12 +34,15 @@ def login():
     if request.method == 'POST':
         id = request.form['username']
         pw = request.form['password']
-        if DB.login(id, pw):
-            session['login_S'] = id
-            return redirect(url_for('main'))
-        else:
-            flash("아이디가 없거나 비밀번호가 틀립니다.")
-            return redirect(url_for('login'))
+        if not id or not pw:
+           return redirect(url_for('login'))
+        else: 
+            if DB.login(id, pw):
+                session['login_S'] = id
+                return redirect(url_for('home'))
+            else:
+                flash("아이디가 없거나 비밀번호가 틀립니다.")
+                return redirect(url_for('login'))
 
     return render_template('login.html')
 
